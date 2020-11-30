@@ -1,0 +1,49 @@
+FROM alpine:3.12
+
+ARG SSH_USER="${SSH_USER:-blink}"
+ARG SSH_PASSWORD="${SSH_PASSWORD:-blink}"
+
+RUN apk --update --no-cache add \
+      bash \
+      git \
+      mosh-server \
+      neovim \
+      openssh-server \
+      tmux \
+&&  adduser -D "${SSH_USER}" -s /bin/bash \
+&&  echo -e "${SSH_PASSWORD}\n${SSH_PASSWORD}" | passwd "${SSH_USER}" \
+&&  ssh-keygen -f   /etc/ssh/ssh_host_rsa_key     -N '' -t rsa     \
+&&  ssh-keygen -f   /etc/ssh/ssh_host_dsa_key     -N '' -t dsa     \
+&&  ssh-keygen -f   /etc/ssh/ssh_host_ecdsa_key   -N '' -t ecdsa   \
+&&  ssh-keygen -f   /etc/ssh/ssh_host_ed25519_key -N '' -t ed25519 \
+&&  chown root:root /etc/ssh  \
+&&  chmod 0600      /etc/ssh/* \
+&&  mkdir -p        /root/.ssh \
+&&  chmod 0700      /root/.ssh \
+&&  rm -rf /var/cache/apk/* \
+           /tmp/* \
+           /var/tmp/*
+
+SHELL ["bash", "-c"]
+
+#COPY ssh_config     /etc/ssh/ssh_config
+#COPY sshd_config    /etc/ssh/sshd_config
+
+COPY . "/home/${SSH_USER}/.dotfiles"/
+RUN chown -R "${SSH_USER}:${SSH_USER}" "/home/${SSH_USER}"
+
+USER "${SSH_USER}"
+RUN ln -s "/home/${SSH_USER}/.dotfiles/tmux/tmux.conf" "/home/${SSH_USER}/.tmux.conf" \
+&&  mkdir -p "/home/${SSH_USER}/.config" \
+&&  ln -s "/home/${SSH_USER}/.dotfiles/nvim" "/home/${SSH_USER}/.config/nvim" \
+&&  ln -s "/home/${SSH_USER}/.dotfiles/nvim/vimrc" "/home/${SSH_USER}/.vimrc" \
+&&  git clone https://github.com/Shougo/dein.vim "/home/${SSH_USER}/.cache/vim/dein/repos/github.com/Shougo/dein.vim" \
+&&  nvim -V1 -es -i NONE -N --noplugin -u "/home/${SSH_USER}/.config/nvim/config/vimrc" \
+      -c "try | call dein#clear_state() | call dein#update() | finally | messages | qall! | endtry"
+
+USER root
+
+EXPOSE 22/tcp
+EXPOSE 22022/udp
+
+CMD ["/usr/sbin/sshd", "-D", "-e", "-f", "/etc/ssh/sshd_config"]
