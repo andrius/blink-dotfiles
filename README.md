@@ -74,11 +74,32 @@ It is possible to test stuff with docker. Given dockerfiles just contains `opens
 and `mosh-server`, and minimal setup to get things working. It is possible to
 test them directly from the blink shell
 
+Supported docker services (and operating systems):
+
+- alpine
+
+  tmux, mosh and neovim installed with apk, clipboard does not work with mosh;
+
+- debian
+
+  tmux and mosh compiled, vim installed as a package. Clipboard works correctly;
+
+- brew
+
+  debian with homebrew installed. tmux, mosh and neovim installed with brew,
+  everything works;
+
+- ubuntu
+
+  ubunut 20.10 with apt-get installed tmux, mosh and vim. Clipboard works
+  correctly.
+
 ## Start and stop service
 
 To start:
 
 ```shell
+# assign alpine, debian, brew or ubuntu to the SERVICE
 SERVICE=alpine && \
 docker-compose build --force-rm --pull ${SERVICE} && \
 docker-compose up -d ${SERVICE} && \
@@ -96,7 +117,7 @@ docker-compose rm --stop --force
 Each time when you build new docker image, SSH keys would be updated, so cleanup
 known hosts file first:
 
-```
+```shell
 rm ~/.ssh/known_hosts
 ```
 
