@@ -142,4 +142,8 @@ docker-compose exec alpine killall mosh-server
 
 # Demo
 
-![screencast](./docs/sceencast.mp4)
+Screencast
+
+[download link](./docs/sceencast.mp4)
+
+![screencast](https://raw.githubusercontent.com/andrius/blink-dotfiles/main/docs/sceencast.mp4)
