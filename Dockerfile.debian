@@ -127,7 +127,8 @@ RUN chown -R "${SSH_USER}:${SSH_USER}" "/home/${SSH_USER}/.dotfiles"
 
 USER "${SSH_USER}"
 
-RUN ln -s "/home/${SSH_USER}/.dotfiles/tmux/tmux.conf" "/home/${SSH_USER}/.tmux.conf" \
+RUN sed -i "s|tmux-256color|xterm-256color|g" "/home/${SSH_USER}/.dotfiles/tmux/tmux.conf" \
+&&  ln -s "/home/${SSH_USER}/.dotfiles/tmux/tmux.conf" "/home/${SSH_USER}/.tmux.conf" \
 &&  mkdir -p "/home/${SSH_USER}/.config" \
 &&  ln -s "/home/${SSH_USER}/.dotfiles/nvim" "/home/${SSH_USER}/.config/nvim" \
 &&  ln -s "/home/${SSH_USER}/.dotfiles/nvim/vimrc" "/home/${SSH_USER}/.vimrc" \
