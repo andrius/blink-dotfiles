@@ -10,6 +10,7 @@ dotfiles for blink.sh env
 - [Development setup with docker](#development-setup-with-docker)
   - [Start and stop service](#start-and-stop-service)
   - [Access host from the blink](#access-host-from-the-blink)
+- [Demo](#demo)
 
 <!-- /MarkdownTOC -->
 
@@ -138,3 +139,7 @@ mosh blink@host -P 22022 -p 22022
 ```shell
 docker-compose exec alpine killall mosh-server
 ```
+
+# Demo
+
+![screencast](./docs/sceencast.mp4)
