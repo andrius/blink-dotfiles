@@ -10,6 +10,7 @@ dotfiles for blink.sh env
 - [Development setup with docker](#development-setup-with-docker)
   - [Start and stop service](#start-and-stop-service)
   - [Access host from the blink](#access-host-from-the-blink)
+- [References](#references)
 - [Demo](#demo)
 
 <!-- /MarkdownTOC -->
@@ -139,6 +140,10 @@ mosh blink@host -P 22022 -p 22022
 ```shell
 docker-compose exec alpine killall mosh-server
 ```
+
+# References
+
+[vim-oscyank plugin](https://github.com/ojroques/vim-oscyank)
 
 # Demo
 

@@ -17,7 +17,7 @@ if has('vim_starting')
     call dein#add('Shougo/deoplete.nvim')
 
     """ With nvim we should use ojroques's repo, details:  https://github.com/fcpg/vim-osc52/issues/6
-    call dein#add('ojroques/vim-osc52')
+    call dein#add('ojroques/vim-oscyank')
     " call dein#add('fcpg/vim-osc52')
 
     call dein#end()
@@ -53,6 +53,6 @@ endif
 if exists('##TextYankPost')
   augroup BlinkClipboardIntegration
     autocmd!
-    autocmd TextYankPost * silent! if v:event.operator ==# 'y' | call SendViaOSC52(join(v:event["regcontents"],"\n")) | endif
+    autocmd TextYankPost * silent! if v:event.operator ==# 'y' | call YankOSC52(join(v:event["regcontents"],"\n")) | endif
   augroup END
 endif
