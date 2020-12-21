@@ -1,5 +1,5 @@
-dotfiles for blink.sh env
-=========================
+my workspace/environment as a docker container
+==============================================
 
 <!-- MarkdownTOC autolink="true" uri_encoding="false" levels="1,2,3,4,5,6" GFM -->
 
@@ -14,6 +14,15 @@ dotfiles for blink.sh env
 - [Demo](#demo)
 
 <!-- /MarkdownTOC -->
+
+# TODO:
+
+- [ ] Multiarch build
+- [ ] Github actions
+- [ ] Add the tools i use
+  - zsh, spaceship-prompt, git
+- [ ] Add the configurations i have
+  - zsh, git, nextcloud
 
 # Introduction
 

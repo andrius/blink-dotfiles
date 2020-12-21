@@ -1,36 +1,6 @@
 version: '3.9'
 
 services:
-  alpine:
-    build:
-      context: .
-      dockerfile: Dockerfile.alpine
-    image: blink-dotfiles:alpine
-    environment:
-      - SSH_USER=blink
-      - SSH_PASSWORD=blnik
-    user: ${SSH_USER}
-    volumes:
-      - .:/usr/src/blink-dotfiles
-    ports:
-      - 0.0.0.0:22022:22/tcp
-      - 0.0.0.0:22022:22022/udp
-
-  debian:
-    build:
-      context: .
-      dockerfile: Dockerfile.debian
-    image: blink-dotfiles:debian
-    environment:
-      - SSH_USER=blink
-      - SSH_PASSWORD=blnik
-    user: ${SSH_USER}
-    volumes:
-      - .:/usr/src/blink-dotfiles
-    ports:
-      - 0.0.0.0:22022:22/tcp
-      - 0.0.0.0:22022:22022/udp
-
   ubuntu:
     build:
       context: .
@@ -45,20 +15,4 @@ services:
     ports:
       - 0.0.0.0:22022:22/tcp
       - 0.0.0.0:22022:22022/udp
-
-  brew:
-    build:
-      context: .
-      dockerfile: Dockerfile.debian-brew
-    image: blink-dotfiles:debian-brew
-    environment:
-      - SSH_USER=blink
-      - SSH_PASSWORD=blnik
-    user: ${SSH_USER}
-    volumes:
-      - .:/usr/src/blink-dotfiles
-    ports:
-      - 0.0.0.0:22022:22/tcp
-      - 0.0.0.0:22022:22022/udp
-
 
