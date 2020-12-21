@@ -15,14 +15,12 @@ RUN set -ueox pipefail \
 &&  dnf -y install \
       git \
       ca-certificates \
-      locales \
       mosh \
       openssh-server \
       psmisc \
       tmux \
       vim \
-&&  adduser --quiet --gecos '' --disabled-password --add_extra_groups "${SSH_USER}" \
-&&  echo -e "${SSH_PASSWORD}\n${SSH_PASSWORD}" | passwd "${SSH_USER}" \
+&&  adduser "${SSH_USER}" \
 &&  dnf clean all \
 &&  rm -rf /tmp/* /var/tmp/*
 

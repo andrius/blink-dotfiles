@@ -1,3 +1,6 @@
+![Ubuntu](https://github.com/mentos1386/env/workflows/Ubuntu/badge.svg)
+![Fedora](https://github.com/mentos1386/env/workflows/Fedora/badge.svg)
+
 my workspace/environment as a docker container
 ==============================================
 
@@ -18,11 +21,13 @@ my workspace/environment as a docker container
 # TODO:
 
 - [ ] Multiarch build
-- [ ] Github actions
+- [x] Github actions
 - [ ] Add the tools i use
   - zsh, spaceship-prompt, git
 - [ ] Add the configurations i have
   - zsh, git, nextcloud
+- [ ] Fedora??
+- [ ] GUI using VNC?
 
 # Introduction
 
