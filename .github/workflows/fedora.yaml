@@ -1,4 +1,4 @@
-name: buildx
+name: Fedora
 
 on:
   schedule:
@@ -11,7 +11,7 @@ on:
       - v*
 
 jobs:
-  buildx:
+  fedora:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,7 +19,7 @@ jobs:
       - name: Prepare
         id: prepare
         run: |
-          DOCKER_IMAGE=ghcr.io/mentos1386/env
+          DOCKER_IMAGE=ghcr.io/mentos1386/env/fedora
           DOCKER_PLATFORMS=linux/amd64,linux/arm/v7,linux/arm64
           VERSION=edge
 
@@ -43,7 +43,7 @@ jobs:
             --build-arg VCS_REF=${GITHUB_SHA::8} \
             --cache-from "type=local,src=/tmp/.buildx-cache" \
             --cache-to "type=local,dest=/tmp/.buildx-cache" \
-            ${TAGS} --file ./Dockerfile.ubuntu .
+            ${TAGS} --file ./Dockerfile.fedora .
       - name: Cache Docker layers
         uses: actions/cache@v2
         id: cache

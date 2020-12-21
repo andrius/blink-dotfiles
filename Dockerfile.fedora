@@ -1,23 +1,18 @@
 # vim: set fenc=utf-8 ts=2 sw=2 sts=2 et ft=Dockerfile :
-FROM ubuntu:20.10
+FROM fedora:33
 
 LABEL maintainer="Tine <mentos1386> Jozelj <tine@tjo.space>"
 
 ARG SSH_USER="${SSH_USER:-blink}"
 ARG SSH_PASSWORD="${SSH_PASSWORD:-blink}"
 
-RUN apt update && apt install -y locales && rm -rf /var/lib/apt/lists/* \
-  && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+RUN dnf -y update
 
 SHELL ["/bin/bash", "-c"]
 
 RUN set -ueox pipefail \
-&&  DEBIAN_FRONTEND=noninteractive \
-&&  apt-get -yqq update \
-&&  apt-get -yqq --no-install-recommends --no-install-suggests install \
+&&  dnf -y update \
+&&  dnf -y install \
       git \
       ca-certificates \
       locales \
@@ -28,10 +23,8 @@ RUN set -ueox pipefail \
       vim \
 &&  adduser --quiet --gecos '' --disabled-password --add_extra_groups "${SSH_USER}" \
 &&  echo -e "${SSH_PASSWORD}\n${SSH_PASSWORD}" | passwd "${SSH_USER}" \
-&&  apt-get -yqq clean all \
-&&  rm -rf /var/lib/apt/lists/* \
-           /tmp/* \
-           /var/tmp/*
+&&  dnf clean all \
+&&  rm -rf /tmp/* /var/tmp/*
 
 COPY . "/home/${SSH_USER}/.dotfiles"/
 RUN chown -R "${SSH_USER}:${SSH_USER}" "/home/${SSH_USER}/.dotfiles"
