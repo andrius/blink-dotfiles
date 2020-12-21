@@ -29,6 +29,17 @@ my workspace/environment as a docker container
 - [ ] Fedora??
 - [ ] GUI using VNC?
 
+# How to build
+
+```
+$ docker run -it --rm --privileged tonistiigi/binfmt --install all
+
+# ...install buildx
+
+# Build ubuntu for arm64
+$ docker buildx build -f Dockerfile.ubuntu --platform linux/arm64 .
+```
+
 # Introduction
 
 [blink shell](https://blink.sh) is an excellent minimalistic SSH and mosh client

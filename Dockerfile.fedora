@@ -6,8 +6,6 @@ LABEL maintainer="Tine <mentos1386> Jozelj <tine@tjo.space>"
 ARG SSH_USER="${SSH_USER:-blink}"
 ARG SSH_PASSWORD="${SSH_PASSWORD:-blink}"
 
-RUN dnf -y update
-
 SHELL ["/bin/bash", "-c"]
 
 RUN set -ueox pipefail \
