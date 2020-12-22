@@ -1,5 +1,8 @@
 FROM rust:1 as build
 
+LABEL maintainer="Tine <mentos1386> Jozelj <tine@tjo.space>"
+LABEL org.opencontainers.image.source https://github.com/mentos1386/env
+
 WORKDIR /usr/src/starship
 
 ARG VERSION=0.47.0
