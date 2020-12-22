@@ -1,0 +1,16 @@
+FROM rust:1 as build
+
+WORKDIR /usr/src/starship
+
+ARG VERSION=0.47.0
+
+RUN git clone https://github.com/starship/starship.git . \
+&&  git checkout tags/v$VERSION
+
+RUN cargo build --release
+
+RUN strip target/release/starship
+
+FROM scratch AS binaries
+COPY --from=build /usr/src/starship/target/$TARGETPLATFORM/release/starship /
+
