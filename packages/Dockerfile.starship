@@ -7,8 +7,9 @@ WORKDIR /usr/src/starship
 
 ARG VERSION=0.47.0
 
-RUN git clone https://github.com/starship/starship.git . \
-&&  git checkout tags/v$VERSION
+RUN git clone https://github.com/starship/starship.git \
+    --branch v$VERSION \
+    --depth 1 .
 
 RUN cargo build --release
 
