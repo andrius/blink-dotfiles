@@ -1,10 +1,9 @@
 ![Ubuntu](https://github.com/mentos1386/env/workflows/Ubuntu/badge.svg)
 ![Fedora](https://github.com/mentos1386/env/workflows/Fedora/badge.svg)
+![Packages](https://github.com/mentos1386/env/workflows/Packages/badge.svg)
 
 my workspace/environment as a docker container
 ==============================================
-
-<!-- MarkdownTOC autolink="true" uri_encoding="false" levels="1,2,3,4,5,6" GFM -->
 
 - [Introduction](#introduction)
 - [Clipboard](#clipboard)
@@ -16,17 +15,14 @@ my workspace/environment as a docker container
 - [References](#references)
 - [Demo](#demo)
 
-<!-- /MarkdownTOC -->
-
 # TODO:
 
-- [ ] Multiarch build
+- [x] Multiarch build
 - [x] Github actions
 - [ ] Add the tools i use
   - zsh, spaceship-prompt, git
 - [ ] Add the configurations i have
   - zsh, git, nextcloud
-- [ ] Fedora??
 - [ ] GUI using VNC?
 
 # How to build
