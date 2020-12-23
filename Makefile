@@ -6,8 +6,13 @@ fedora:
 ubuntu:
 	@docker buildx build --load -t env-ubuntu -f Dockerfile.ubuntu .
 
-packages:
-	@docker buildx build --load -t starship:0.47.0 -f packages/Dockerfile.starship packages/
+package-starship:
+	@docker buildx build --load -t starship -f packages/Dockerfile.starship packages/
+
+package-kubectl:
+	@docker buildx build --load -t kubectl -f packages/Dockerfile.kubectl packages/
+
+packages: package-kubectl package-starship
 
 all: packages fedora ubuntu
 
