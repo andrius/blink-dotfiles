@@ -25,16 +25,6 @@ my workspace/environment as a docker container
   - zsh, git, nextcloud
 - [ ] GUI using VNC?
 
-# How to build
-
-```
-$ docker run -it --rm --privileged tonistiigi/binfmt --install all
-
-# ...install buildx
-
-# Build ubuntu for arm64
-$ docker buildx build -f Dockerfile.ubuntu --platform linux/arm64 .
-```
 
 # Introduction
 

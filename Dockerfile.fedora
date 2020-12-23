@@ -4,42 +4,64 @@ FROM fedora:33
 LABEL maintainer="Tine <mentos1386> Jozelj <tine@tjo.space>"
 LABEL org.opencontainers.image.source https://github.com/mentos1386/env
 
-ARG SSH_USER="${SSH_USER:-blink}"
-ARG SSH_PASSWORD="${SSH_PASSWORD:-blink}"
+ARG SSH_USER="${SSH_USER:-tine}"
 
 SHELL ["/bin/bash", "-c"]
 
 RUN set -ueox pipefail \
 &&  dnf -y update \
 &&  dnf -y install \
-      git \
       ca-certificates \
       mosh \
       openssh-server \
       psmisc \
-      tmux \
-      vim \
+      util-linux-user \
 &&  adduser "${SSH_USER}" \
 &&  dnf clean all \
 &&  rm -rf /tmp/* /var/tmp/*
 
-COPY . "/home/${SSH_USER}/.dotfiles"/
-RUN chown -R "${SSH_USER}:${SSH_USER}" "/home/${SSH_USER}/.dotfiles"
+# Install available packages
+RUN set -ueox pipefail \
+&&  dnf -y update \
+&&  dnf -y install \
+      git \
+      tmux \
+      vim \
+      zsh \
+&&  dnf clean all \
+&&  rm -rf /tmp/* /var/tmp/*
 
+# Install self compiled packages
+COPY --from=ghcr.io/mentos1386/starship:0.47.0 /starship /usr/local/bin/starship
+
+# Create .dotfiles
+COPY --chown=${SSH_USER}:${SSH_USER} dotfiles /home/${SSH_USER}/.dotfiles
+
+# Set ZSH for SSH_USER
+RUN chsh -s $(which zsh) ${SSH_USER}
+
+# User Configuration
 USER "${SSH_USER}"
 
-RUN ln -s "/home/${SSH_USER}/.dotfiles/tmux/tmux.conf" "/home/${SSH_USER}/.tmux.conf" \
-&&  mkdir -p "/home/${SSH_USER}/.config" \
+# ZSH
+RUN ln -s /home/${SSH_USER}/.dotfiles/zsh/zshrc /home/${SSH_USER}/.zshrc
+# TMUX
+RUN ln -s /home/${SSH_USER}/.dotfiles/tmux/tmux.conf /home/${SSH_USER}/.tmux.conf
+# VIM
+RUN mkdir -p "/home/${SSH_USER}/.config" \
 &&  ln -s "/home/${SSH_USER}/.dotfiles/nvim" "/home/${SSH_USER}/.config/nvim" \
 &&  ln -s "/home/${SSH_USER}/.dotfiles/nvim/vimrc" "/home/${SSH_USER}/.vimrc" \
 &&  git clone --depth 1 https://github.com/Shougo/dein.vim "/home/${SSH_USER}/.cache/vim/dein/repos/github.com/Shougo/dein.vim" \
 &&  vim -V1 -es -i NONE -N --noplugin -u "/home/${SSH_USER}/.config/nvim/config/vimrc" \
       -c "try | call dein#clear_state() | call dein#update() | finally | messages | qall! | endtry"
+# SSH
+RUN mkdir -p /home/${SSH_USER}/.ssh \
+&&  ln -s /home/${SSH_USER}/.dotfiles/ssh/authorized_keys /home/${SSH_USER}/.ssh/authorized_keys
 
+# Start SSH Daemon
 USER root
 EXPOSE 22/tcp
 EXPOSE 22022/udp
-
 RUN mkdir -p /run/sshd
 CMD ["/usr/sbin/sshd", "-D", "-e", "-f", "/etc/ssh/sshd_config"]
 
