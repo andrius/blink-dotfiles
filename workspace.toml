@@ -1,0 +1,37 @@
+##
+# Fedora
+[templates."fedora-action"]
+template = "templates/actions/workspace.yaml.tmpl"
+
+[templates."fedora-action".vars]
+name = "fedora"
+repository = "ghcr.io/mentos1386"
+platforms = "linux/amd64,linux/arm64"
+
+##
+# Ubuntu
+[templates."ubuntu-action"]
+template = "templates/actions/workspace.yaml.tmpl"
+
+[templates."ubuntu-action".vars]
+name = "ubuntu"
+repository = "ghcr.io/mentos1386"
+platforms = "linux/amd64,linux/arm64"
+
+##
+# Packages
+[templates."package-action"]
+template = "templates/actions/packages.yaml.tmpl"
+
+[templates."package-action".vars]
+repository = "ghcr.io/mentos1386"
+platforms  = "linux/amd64,linux/arm64"
+
+[[templates."package-action".vars.jobs]]
+name    = "kubectl"
+version = "1.20.0"
+
+[[templates."package-action".vars.jobs]]
+name    = "starship"
+version = "0.47.0"
+

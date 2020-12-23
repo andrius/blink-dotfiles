@@ -1,4 +1,4 @@
-.PHONY: fedora ubuntu packages all
+.PHONY: fedora ubuntu packages package-kubectl package-starship all
 
 fedora:
 	@docker buildx build --load -t env-fedora -f Dockerfile.fedora .
@@ -15,4 +15,9 @@ package-kubectl:
 packages: package-kubectl package-starship
 
 all: packages fedora ubuntu
+
+template:
+	@go run ./main.go template package-action > .github/workflows/packages.yaml
+	@go run ./main.go template ubuntu-action > .github/workflows/ubuntu.yaml
+	@go run ./main.go template fedora-action > .github/workflows/fedora.yaml
 
