@@ -43,6 +43,8 @@ RUN chsh -s $(which zsh) ${SSH_USER}
 # User Configuration
 USER "${SSH_USER}"
 
+# GIT
+RUN ln -s /home/${SSH_USER}/.dotfiles/git/gitconfig /home/${SSH_USER}/.gitconfig
 # ZSH
 RUN ln -s /home/${SSH_USER}/.dotfiles/zsh/zshrc /home/${SSH_USER}/.zshrc
 # TMUX
