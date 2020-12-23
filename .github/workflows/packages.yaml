@@ -29,7 +29,7 @@ jobs:
             --build-arg VCS_REF=${GITHUB_SHA::8} \
             --cache-from "type=local,src=/tmp/.buildx-cache" \
             --cache-to "type=local,dest=/tmp/.buildx-cache" \
-            ${TAGS} --file ./packages/Dockerfile.starship .
+            ${TAGS} --file ./packages/Dockerfile.kubectl .
       - name: Cache Docker layers
         uses: actions/cache@v2
         with:
