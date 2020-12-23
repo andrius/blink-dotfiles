@@ -11,7 +11,7 @@ RUN chmod +x kubectl
 
 FROM scratch AS binaries
 LABEL maintainer="Tine <mentos1386> Jozelj <tine@tjo.space>"
-LABEL org.opencontainers.image.source https://github.com/mentos1386/env
+LABEL org.opencontainers.image.source https://github.com/mentos1386/workspace
 
 COPY --from=build /root/kubectl /
 

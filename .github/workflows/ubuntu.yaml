@@ -19,7 +19,7 @@ jobs:
       - name: Prepare
         id: prepare
         run: |
-          DOCKER_IMAGE=ghcr.io/mentos1386/env-ubuntu
+          DOCKER_IMAGE=ghcr.io/mentos1386/workspace-ubuntu
           DOCKER_PLATFORMS=linux/amd64,linux/arm64
           VERSION=edge
 
