@@ -1,14 +1,4 @@
 ##
-# Fedora
-[templates."fedora-action"]
-template = "templates/actions/workspace.yaml.tmpl"
-
-[templates."fedora-action".vars]
-name = "fedora"
-repository = "ghcr.io/mentos1386"
-platforms = "linux/amd64,linux/arm64"
-
-##
 # Ubuntu
 [templates."ubuntu-action"]
 template = "templates/actions/workspace.yaml.tmpl"

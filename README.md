@@ -1,5 +1,4 @@
 ![Ubuntu](https://github.com/mentos1386/workspace/workflows/ubuntu/badge.svg)
-![Fedora](https://github.com/mentos1386/workspace/workflows/fedora/badge.svg)
 ![Packages](https://github.com/mentos1386/workspace/workflows/packages/badge.svg)
 
 my workspace as a docker container

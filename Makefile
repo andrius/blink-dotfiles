@@ -1,8 +1,3 @@
-
-.PHONY: build-fedora
-build-fedora:
-	@docker buildx build --load -t env-fedora -f Dockerfile.fedora .
-
 .PHONY: build-ubuntu
 build-ubuntu:
 	@docker buildx build --load -t env-ubuntu -f Dockerfile.ubuntu .
@@ -18,20 +13,18 @@ build-package-kubectl:
 .PHONY: build-packages
 build-packages: package-kubectl package-starship
 
-build: packages fedora ubuntu
+build: packages ubuntu
 
 .PHONY: template
 template:
 	@go run ./main.go template package-action > .github/workflows/packages.yaml
 	@go run ./main.go template ubuntu-action > .github/workflows/ubuntu.yaml
-	@go run ./main.go template fedora-action > .github/workflows/fedora.yaml
 
 pull:
-	@docker pull ghcr.io/mentos1386/workspace-fedora:edge
-	#@docker pull ghcr.io/mentos1386/workspace-ubuntu:edge
+	@docker pull ghcr.io/mentos1386/workspace-ubuntu:edge
 	@docker pull ghcr.io/mentos1386/starship:0.47.0
 	@docker pull ghcr.io/mentos1386/kubectl:1.20.0
 
-run-fedora:
-	@docker run -it --rm --workdir /home/tine --user tine ghcr.io/mentos1386/workspace-fedora:edge zsh
+run-ubuntu:
+	@docker run -it --rm --workdir /home/tine --user tine ghcr.io/mentos1386/workspace-ubuntu:edge zsh
 
