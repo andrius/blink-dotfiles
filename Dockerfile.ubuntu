@@ -4,7 +4,7 @@ FROM ubuntu:20.10
 LABEL maintainer="Tine <mentos1386> Jozelj <tine@tjo.space>"
 LABEL org.opencontainers.image.source https://github.com/mentos1386/workspace
 
-ARG SSH_USER="${SSH_USER:-blink}"
+ARG SSH_USER="${SSH_USER:-tine}"
 
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
