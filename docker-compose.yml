@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  workspace-ubuntu:
+    image: ghcr.io/mentos1386/workspace-ubuntu:edge
+    ports:
+      - 0.0.0.0:22022:22/tcp
+      - 0.0.0.0:22022:22022/udp
+

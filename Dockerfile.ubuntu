@@ -21,11 +21,20 @@ RUN set -ueox pipefail \
       mosh \
       openssh-server \
       psmisc \
+&&  sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
+&&  locale-gen \
 &&  adduser --quiet --gecos '' --disabled-password --add_extra_groups "${SSH_USER}" \
 &&  apt-get -yqq clean all \
 &&  rm -rf /var/lib/apt/lists/* \
            /tmp/* \
            /var/tmp/*
+
+# Configure SSH
+RUN touch /etc/ssh/sshd_config.d/custom \
+&& echo "PubkeyAuthentication yes" >> /etc/ssh/sshd_config.d/custom \
+&& echo "PasswordAuthentication no" >> /etc/ssh/sshd_config.d/custom \
+&& echo "UsePAM no" >> /etc/ssh/sshd_config.d/custom \
+&& echo "X11Forwarding no" >> /etc/ssh/sshd_config.d/custom
 
 # Install available packages
 RUN set -ueox pipefail \
@@ -44,6 +53,18 @@ RUN set -ueox pipefail \
 # Install other packages
 COPY --from=ghcr.io/mentos1386/starship:0.47.0 /starship /usr/local/bin/starship
 COPY --from=ghcr.io/mentos1386/kubectl:1.20.0 /kubectl /usr/local/bin/kubectl
+# Golang
+COPY --from=golang:1.15.6 --chown=${SSH_USER} /usr/local/go /home/${SSH_USER}/.go
+ENV PATH=/home/${SSH_USER}/.go/bin:$PATH
+# Rust
+COPY --from=rust:1.48.0 --chown=${SSH_USER} /usr/local/cargo /home/${SSH_USER}/.cargo
+COPY --from=rust:1.48.0 --chown=${SSH_USER} /usr/local/rustup /home/${SSH_USER}/.rustup
+ENV CARGO_HOME=/home/${SSH_USER}/.cargo
+ENV RUSTUP_HOME=/home/${SSH_USER}/.rustup
+ENV PATH=/home/${SSH_USER}/.cargo/bin:$PATH
+# Node
+COPY --from=node:15.5.0 --chown=${SSH_USER} /usr/local/bin/node /usr/local/bin/node
+# TODO: Add yarbn/npm/npx/yarnpkg??
 
 # Create .dotfiles
 COPY --chown=${SSH_USER}:${SSH_USER} dotfiles /home/${SSH_USER}/.dotfiles
