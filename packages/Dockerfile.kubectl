@@ -5,6 +5,7 @@ WORKDIR /root
 RUN apk --no-cache add curl
 
 ARG VERSION=1.20.0
+ARG TARGETPLATFORM
 
 RUN curl -LO "https://storage.googleapis.com/kubernetes-release/release/v${VERSION}/bin/${TARGETPLATFORM}/kubectl"
 RUN chmod +x kubectl
