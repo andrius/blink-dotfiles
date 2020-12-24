@@ -30,11 +30,12 @@ RUN set -ueox pipefail \
 # Install available packages
 RUN set -ueox pipefail \
 &&  DEBIAN_FRONTEND=noninteractive \
+&&  apt-get -yqq update \
 &&  apt-get -yqq --no-install-recommends --no-install-suggests install \
-&&    git \
-&&    tmux \
-&&    vim \
-&&    zsh \
+      git \
+      tmux \
+      vim \
+      zsh \
 &&  apt-get -yqq clean all \
 &&  rm -rf /var/lib/apt/lists/* \
            /tmp/* \
