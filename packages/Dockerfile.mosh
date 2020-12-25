@@ -1,0 +1,52 @@
+FROM debian:10.7 as build
+
+WORKDIR /usr/src/mosh
+
+SHELL ["/bin/bash", "-c"]
+
+RUN set -ueox pipefail \
+&&  DEBIAN_FRONTEND=noninteractive \
+&&  apt-get -yqq update \
+&&  apt-get -yqq --no-install-recommends --no-install-suggests install \
+      ca-certificates \
+      git \
+      autotools-dev \
+      perl \
+      protobuf-compiler \
+      libprotobuf-dev \
+      dh-autoreconf \
+      pkg-config \
+      libutempter-dev \
+      zlib1g-dev \
+      libncurses5-dev \
+      libssl-dev \
+      locales \
+      tmux \
+      less \
+      bash-completion \
+      g++ \
+&&  apt-get -yqq clean all \
+&&  rm -rf /var/lib/apt/lists/* \
+           /tmp/* \
+           /var/tmp/*
+
+ARG VERSION=master
+
+RUN git clone https://github.com/mobile-shell/mosh.git \
+    --branch $VERSION \
+    --depth 1 .
+RUN ./autogen.sh
+RUN ./configure --enable-compile-warnings=error
+RUN make
+RUN make install
+
+FROM alpine:3
+LABEL maintainer="Tine <mentos1386> Jozelj <tine@tjo.space>"
+LABEL org.opencontainers.image.source https://github.com/mentos1386/workspace
+
+RUN apk --no-cache add perl
+
+COPY --from=build /usr/local/bin/mosh /usr/local/bin/mosh
+
+ENTRYPOINT /usr/local/bin/mosh
+

@@ -10,7 +10,10 @@ build-package-kubectl:
 	@docker buildx build --load -t ${REGISTRY}/kubectl:1.20.0 -f packages/Dockerfile.kubectl packages/
 
 build-package-glow:
-	@docker buildx build --progress plain --load -t ${REGISTRY}/glow:1.3.0 -f packages/Dockerfile.glow packages/
+	@docker buildx build --load -t ${REGISTRY}/glow:1.3.0 -f packages/Dockerfile.glow packages/
+
+build-package-mosh:
+	@docker buildx build --load -t ${REGISTRY}/mosh:master -f packages/Dockerfile.mosh packages/
 
 build-packages: package-kubectl package-starship
 

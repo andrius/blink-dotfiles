@@ -18,7 +18,7 @@ RUN set -ueox pipefail \
 &&  apt-get -yqq --no-install-recommends --no-install-suggests install \
       ca-certificates \
       locales \
-      mosh \
+      perl \
       openssh-server \
       psmisc \
 &&  sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
@@ -54,6 +54,7 @@ RUN set -ueox pipefail \
 COPY --from=ghcr.io/mentos1386/starship:0.47.0 /usr/local/bin/starship /usr/local/bin/starship
 COPY --from=ghcr.io/mentos1386/kubectl:1.20.0 /usr/local/bin/kubectl /usr/local/bin/kubectl
 COPY --from=ghcr.io/mentos1386/glow:1.3.0 /usr/local/bin/glow /usr/local/bin/glow
+COPY --from=ghcr.io/mentos1386/mosh:master /usr/local/bin/mosh /usr/local/bin/mosh
 # Golang
 COPY --from=golang:1.15.6 --chown=${SSH_USER} /usr/local/go /home/${SSH_USER}/.go
 ENV PATH=/home/${SSH_USER}/.go/bin:$PATH
