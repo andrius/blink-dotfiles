@@ -10,9 +10,11 @@ RUN git clone https://github.com/starship/starship.git \
 RUN cargo build --release
 RUN strip target/release/starship
 
-FROM scratch AS binaries
+FROM alpine:3
 LABEL maintainer="Tine <mentos1386> Jozelj <tine@tjo.space>"
 LABEL org.opencontainers.image.source https://github.com/mentos1386/workspace
 
-COPY --from=build /usr/src/starship/target/release/starship /
+COPY --from=build /usr/src/starship/target/release/starship /usr/local/bin/starship
+
+ENTRYPOINT /usr/local/bin/starship
 

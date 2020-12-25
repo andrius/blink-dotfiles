@@ -10,9 +10,11 @@ ARG TARGETPLATFORM
 RUN curl -LO "https://storage.googleapis.com/kubernetes-release/release/v${VERSION}/bin/${TARGETPLATFORM}/kubectl"
 RUN chmod +x kubectl
 
-FROM scratch AS binaries
+FROM alpine:3
 LABEL maintainer="Tine <mentos1386> Jozelj <tine@tjo.space>"
 LABEL org.opencontainers.image.source https://github.com/mentos1386/workspace
 
-COPY --from=build /root/kubectl /
+COPY --from=build /root/kubectl /usr/local/bin/kubectl
+
+ENTRYPOINT /usr/local/bin/kubectl
 
