@@ -1,4 +1,6 @@
 REGISTRY=ghcr.io/mentos1386
+PROGRESS=plain
+
 
 build:
 	@docker buildx build --load -t ${REGISTRY}/workspace-ubuntu:edge -f Dockerfile.ubuntu .
@@ -13,7 +15,7 @@ build-package-glow:
 	@docker buildx build --load -t ${REGISTRY}/glow:1.3.0 -f packages/Dockerfile.glow packages/
 
 build-package-mosh:
-	@docker buildx build --load -t ${REGISTRY}/mosh:master -f packages/Dockerfile.mosh packages/
+	@docker buildx build --progress ${PROGRESS} --load -t ${REGISTRY}/mosh:master -f packages/Dockerfile.mosh packages/
 
 build-packages: package-kubectl package-starship
 

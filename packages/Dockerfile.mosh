@@ -47,6 +47,8 @@ LABEL org.opencontainers.image.source https://github.com/mentos1386/workspace
 RUN apk --no-cache add perl
 
 COPY --from=build /usr/local/bin/mosh /usr/local/bin/mosh
+COPY --from=build /usr/local/bin/mosh-server /usr/local/bin/mosh-server
+COPY --from=build /usr/local/bin/mosh-client /usr/local/bin/mosh-client
 
 ENTRYPOINT /usr/local/bin/mosh
 
