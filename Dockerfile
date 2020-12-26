@@ -1,31 +1,32 @@
 # vim: set fenc=utf-8 ts=2 sw=2 sts=2 et ft=Dockerfile :
-FROM ubuntu:20.10
+FROM alpine:3.12
 
 LABEL maintainer="Tine <mentos1386> Jozelj <tine@tjo.space>"
 LABEL org.opencontainers.image.source https://github.com/mentos1386/workspace
 
 ARG SSH_USER="${SSH_USER:-tine}"
 
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+RUN apk --update --no-cache add bash
 
-SHELL ["/bin/bash", "-c"]
+SHELL ["bash", "-c"]
 
-RUN set -ueox pipefail \
-&&  DEBIAN_FRONTEND=noninteractive \
-&&  apt-get -yqq update \
-&&  apt-get -yqq --no-install-recommends --no-install-suggests install \
-      ca-certificates \
-      locales \
-      perl \
+RUN apk --update --no-cache add \
+      git \
+      mosh \
+      neovim \
       openssh-server \
-      psmisc \
-&&  sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
-&&  locale-gen \
-&&  adduser --quiet --gecos '' --disabled-password --add_extra_groups "${SSH_USER}" \
-&&  apt-get -yqq clean all \
-&&  rm -rf /var/lib/apt/lists/* \
+      tmux \
+      zsh \
+&&  adduser -D "${SSH_USER}" -s /bin/bash \
+&&  ssh-keygen -f   /etc/ssh/ssh_host_rsa_key     -N '' -t rsa     \
+&&  ssh-keygen -f   /etc/ssh/ssh_host_dsa_key     -N '' -t dsa     \
+&&  ssh-keygen -f   /etc/ssh/ssh_host_ecdsa_key   -N '' -t ecdsa   \
+&&  ssh-keygen -f   /etc/ssh/ssh_host_ed25519_key -N '' -t ed25519 \
+&&  chown root:root /etc/ssh  \
+&&  chmod 0600      /etc/ssh/* \
+&&  mkdir -p        /root/.ssh \
+&&  chmod 0700      /root/.ssh \
+&&  rm -rf /var/cache/apk/* \
            /tmp/* \
            /var/tmp/*
 
@@ -36,27 +37,13 @@ RUN touch /etc/ssh/sshd_config.d/custom \
 && echo "UsePAM no" >> /etc/ssh/sshd_config.d/custom \
 && echo "X11Forwarding no" >> /etc/ssh/sshd_config.d/custom
 
-# Install available packages
-RUN set -ueox pipefail \
-&&  DEBIAN_FRONTEND=noninteractive \
-&&  apt-get -yqq update \
-&&  apt-get -yqq --no-install-recommends --no-install-suggests install \
-      git \
-      tmux \
-      vim \
-      zsh \
-&&  apt-get -yqq clean all \
-&&  rm -rf /var/lib/apt/lists/* \
-           /tmp/* \
-           /var/tmp/*
-
-# Install other packages
+# install tools
 COPY --from=ghcr.io/mentos1386/starship:0.47.0 /usr/local/bin/starship /usr/local/bin/starship
 COPY --from=ghcr.io/mentos1386/kubectl:1.20.0 /usr/local/bin/kubectl /usr/local/bin/kubectl
 COPY --from=ghcr.io/mentos1386/glow:1.3.0 /usr/local/bin/glow /usr/local/bin/glow
-COPY --from=ghcr.io/mentos1386/mosh:master /usr/local/bin/mosh /usr/local/bin/mosh
-COPY --from=ghcr.io/mentos1386/mosh:master /usr/local/bin/mosh-server /usr/local/bin/mosh-server
-COPY --from=ghcr.io/mentos1386/mosh:master /usr/local/bin/mosh-client /usr/local/bin/mosh-client
+COPY --from=ghcr.io/mentos1386/mosh:master /usr/bin/mosh /usr/bin/mosh
+COPY --from=ghcr.io/mentos1386/mosh:master /usr/bin/mosh-server /usr/bin/mosh-server
+COPY --from=ghcr.io/mentos1386/mosh:master /usr/bin/mosh-client /usr/bin/mosh-client
 # Golang
 COPY --from=golang:1.15.6 --chown=${SSH_USER} /usr/local/go /home/${SSH_USER}/.go
 ENV PATH=/home/${SSH_USER}/.go/bin:$PATH
@@ -90,16 +77,14 @@ RUN mkdir -p "/home/${SSH_USER}/.config" \
 &&  ln -s "/home/${SSH_USER}/.dotfiles/nvim" "/home/${SSH_USER}/.config/nvim" \
 &&  ln -s "/home/${SSH_USER}/.dotfiles/nvim/vimrc" "/home/${SSH_USER}/.vimrc" \
 &&  git clone --depth 1 https://github.com/Shougo/dein.vim "/home/${SSH_USER}/.cache/vim/dein/repos/github.com/Shougo/dein.vim" \
-&&  vim -V1 -es -i NONE -N --noplugin -u "/home/${SSH_USER}/.config/nvim/config/vimrc" \
+&&  nvim -V1 -es -i NONE -N --noplugin -u "/home/${SSH_USER}/.config/nvim/config/vimrc" \
       -c "try | call dein#clear_state() | call dein#update() | finally | messages | qall! | endtry"
 # SSH
 RUN mkdir -p /home/${SSH_USER}/.ssh \
 &&  ln -s /home/${SSH_USER}/.dotfiles/ssh/authorized_keys /home/${SSH_USER}/.ssh/authorized_keys
 
-# Start SSH Daemon
 USER root
 EXPOSE 22/tcp
 EXPOSE 22022/udp
-RUN mkdir -p /run/sshd
 CMD ["/usr/sbin/sshd", "-D", "-e", "-f", "/etc/ssh/sshd_config"]
 

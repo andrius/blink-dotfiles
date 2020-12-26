@@ -3,7 +3,7 @@ PROGRESS=plain
 
 
 build:
-	@docker buildx build --load -t ${REGISTRY}/workspace-ubuntu:edge -f Dockerfile.ubuntu .
+	@docker buildx build --load -t ${REGISTRY}/workspace:edge -f Dockerfile .
 
 build-package-starship:
 	@docker buildx build --load -t ${REGISTRY}/starship:0.47.0 -f packages/Dockerfile.starship packages/
@@ -21,7 +21,7 @@ build-packages: package-kubectl package-starship
 
 template:
 	@go run ./main.go template package-action > .github/workflows/packages.yaml
-	@go run ./main.go template ubuntu-action > .github/workflows/ubuntu.yaml
+	@go run ./main.go template workspace-action > .github/workflows/workspace.yaml
 
 pull:
 	@docker pull ghcr.io/mentos1386/workspace-ubuntu:edge
@@ -29,5 +29,5 @@ pull:
 	@docker pull ghcr.io/mentos1386/kubectl:1.20.0
 
 run:
-	@docker run -it --rm --workdir /home/tine --user tine ghcr.io/mentos1386/workspace-ubuntu:edge zsh
+	@docker run -it --rm --workdir /home/tine --user tine ghcr.io/mentos1386/workspace:edge zsh
 

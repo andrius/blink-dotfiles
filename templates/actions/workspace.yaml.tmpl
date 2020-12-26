@@ -19,7 +19,7 @@ jobs:
       - name: Prepare
         id: prepare
         run: |
-          DOCKER_IMAGE=[[[.repository]]]/workspace-[[[.name]]]
+          DOCKER_IMAGE=[[[.repository]]]/[[[.name]]]
           DOCKER_PLATFORMS=[[[.platforms]]]
           VERSION=edge
 
@@ -43,7 +43,7 @@ jobs:
             --build-arg VCS_REF=${GITHUB_SHA::8} \
             --cache-from "type=local,src=/tmp/.buildx-cache" \
             --cache-to "type=local,dest=/tmp/.buildx-cache" \
-            ${TAGS} --file ./Dockerfile.[[[.name]]] .
+            ${TAGS} --file ./[[[.dockerfile]]] .
       - name: Cache Docker layers
         uses: actions/cache@v2
         with:

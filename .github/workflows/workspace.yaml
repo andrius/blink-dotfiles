@@ -1,4 +1,4 @@
-name: ubuntu
+name: workspace
 
 on:
   schedule:
@@ -11,7 +11,7 @@ on:
       - v*
 
 jobs:
-  ubuntu:
+  workspace:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,7 +19,7 @@ jobs:
       - name: Prepare
         id: prepare
         run: |
-          DOCKER_IMAGE=ghcr.io/mentos1386/workspace-ubuntu
+          DOCKER_IMAGE=ghcr.io/mentos1386/workspace
           DOCKER_PLATFORMS=linux/amd64,linux/arm64
           VERSION=edge
 
@@ -43,14 +43,14 @@ jobs:
             --build-arg VCS_REF=${GITHUB_SHA::8} \
             --cache-from "type=local,src=/tmp/.buildx-cache" \
             --cache-to "type=local,dest=/tmp/.buildx-cache" \
-            ${TAGS} --file ./Dockerfile.ubuntu .
+            ${TAGS} --file ./Dockerfile .
       - name: Cache Docker layers
         uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-ubuntu-${{ github.sha }}
+          key: ${{ runner.os }}-workspace-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-ubuntu-
+            ${{ runner.os }}-workspace-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx

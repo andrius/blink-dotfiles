@@ -1,10 +1,11 @@
 ##
-# Ubuntu
-[templates."ubuntu-action"]
+# Workspace
+[templates."workspace-action"]
 template = "templates/actions/workspace.yaml.tmpl"
 
-[templates."ubuntu-action".vars]
-name = "ubuntu"
+[templates."workspace-action".vars]
+name = "workspace"
+dockerfile = "Dockerfile"
 repository = "ghcr.io/mentos1386"
 platforms = "linux/amd64,linux/arm64"
 
