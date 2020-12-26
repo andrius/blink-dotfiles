@@ -29,3 +29,6 @@ pull:
 run:
 	@docker run -it --rm --workdir /home/tine --user tine ghcr.io/mentos1386/workspace:edge zsh
 
+run-root:
+	@docker run -it --rm --workdir /home/tine --user root ghcr.io/mentos1386/workspace:edge zsh
+

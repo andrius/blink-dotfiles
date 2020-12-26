@@ -4,7 +4,8 @@ FROM alpine:3.12
 LABEL maintainer="Tine <mentos1386> Jozelj <tine@tjo.space>"
 LABEL org.opencontainers.image.source https://github.com/mentos1386/workspace
 
-ARG SSH_USER="${SSH_USER:-tine}"
+ARG SSH_USER="tine"
+ARG SSH_PASSWORD="tine"
 
 RUN apk --update --no-cache add bash
 
@@ -17,7 +18,10 @@ RUN apk --update --no-cache add \
       openssh-server \
       tmux \
       zsh \
+      gcc \
+      libc-dev \
 &&  adduser -D "${SSH_USER}" -s /bin/zsh \
+&&  echo -e "${SSH_PASSWORD}\n${SSH_PASSWORD}" | passwd "${SSH_USER}" \
 &&  ssh-keygen -f   /etc/ssh/ssh_host_rsa_key     -N '' -t rsa     \
 &&  ssh-keygen -f   /etc/ssh/ssh_host_dsa_key     -N '' -t dsa     \
 &&  ssh-keygen -f   /etc/ssh/ssh_host_ecdsa_key   -N '' -t ecdsa   \
@@ -33,7 +37,6 @@ RUN apk --update --no-cache add \
 # Configure SSH
 RUN echo "PubkeyAuthentication yes" >> /etc/ssh/sshd_config \
 &&  echo "PasswordAuthentication no" >> /etc/ssh/sshd_config \
-&&  echo "UsePAM no" >> /etc/ssh/sshd_config \
 &&  echo "X11Forwarding no" >> /etc/ssh/sshd_config
 
 # install tools
@@ -47,8 +50,8 @@ COPY --from=ghcr.io/mentos1386/mosh:master /usr/bin/mosh-client /usr/bin/mosh-cl
 COPY --from=golang:1.15.6-alpine --chown=${SSH_USER} /usr/local/go /home/${SSH_USER}/.go
 ENV PATH=/home/${SSH_USER}/.go/bin:$PATH
 # Rust
-COPY --from=rust:1.48.0-alpine --chown=${SSH_USER} /usr/local/cargo /home/${SSH_USER}/.cargo
-COPY --from=rust:1.48.0-alpine --chown=${SSH_USER} /usr/local/rustup /home/${SSH_USER}/.rustup
+COPY --from=ghcr.io/mentos1386/rust:1.48.0 --chown=${SSH_USER} /usr/local/cargo /home/${SSH_USER}/.cargo
+COPY --from=ghcr.io/mentos1386/rust:1.48.0 --chown=${SSH_USER} /usr/local/rustup /home/${SSH_USER}/.rustup
 ENV CARGO_HOME=/home/${SSH_USER}/.cargo
 ENV RUSTUP_HOME=/home/${SSH_USER}/.rustup
 ENV PATH=/home/${SSH_USER}/.cargo/bin:$PATH
