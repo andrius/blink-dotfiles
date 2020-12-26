@@ -1,3 +1,9 @@
+# Always start tmux if it isn't yet.
+if [ -z "$TMUX" ]
+then
+  tmux attach -t default || tmux new -s default
+fi
+
 # Starship
 eval "$(starship init zsh)"
 
