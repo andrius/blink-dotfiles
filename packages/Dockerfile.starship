@@ -1,4 +1,5 @@
-FROM rust:1-alpine as build
+ARG REPOSITORY=ghcr.io/mentos1386
+FROM ${REPOSITORY}/rust:1.48.0 as build
 
 WORKDIR /usr/src/starship
 

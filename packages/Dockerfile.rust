@@ -1,5 +1,8 @@
 FROM alpine:3.12
 
+LABEL maintainer="Tine <mentos1386> Jozelj <tine@tjo.space>"
+LABEL org.opencontainers.image.source https://github.com/mentos1386/workspace
+
 RUN apk add --no-cache \
         ca-certificates \
         gcc
