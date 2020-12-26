@@ -17,7 +17,7 @@ RUN apk --update --no-cache add \
       openssh-server \
       tmux \
       zsh \
-&&  adduser -D "${SSH_USER}" -s /bin/bash \
+&&  adduser -D "${SSH_USER}" -s /bin/zsh \
 &&  ssh-keygen -f   /etc/ssh/ssh_host_rsa_key     -N '' -t rsa     \
 &&  ssh-keygen -f   /etc/ssh/ssh_host_dsa_key     -N '' -t dsa     \
 &&  ssh-keygen -f   /etc/ssh/ssh_host_ecdsa_key   -N '' -t ecdsa   \
@@ -31,11 +31,10 @@ RUN apk --update --no-cache add \
            /var/tmp/*
 
 # Configure SSH
-RUN touch /etc/ssh/sshd_config.d/custom \
-&& echo "PubkeyAuthentication yes" >> /etc/ssh/sshd_config.d/custom \
-&& echo "PasswordAuthentication no" >> /etc/ssh/sshd_config.d/custom \
-&& echo "UsePAM no" >> /etc/ssh/sshd_config.d/custom \
-&& echo "X11Forwarding no" >> /etc/ssh/sshd_config.d/custom
+RUN echo "PubkeyAuthentication yes" >> /etc/ssh/sshd_config \
+&&  echo "PasswordAuthentication no" >> /etc/ssh/sshd_config \
+&&  echo "UsePAM no" >> /etc/ssh/sshd_config \
+&&  echo "X11Forwarding no" >> /etc/ssh/sshd_config
 
 # install tools
 COPY --from=ghcr.io/mentos1386/starship:0.47.0 /usr/local/bin/starship /usr/local/bin/starship
@@ -54,14 +53,11 @@ ENV CARGO_HOME=/home/${SSH_USER}/.cargo
 ENV RUSTUP_HOME=/home/${SSH_USER}/.rustup
 ENV PATH=/home/${SSH_USER}/.cargo/bin:$PATH
 # Node
-COPY --from=node:15.5.0 --chown=${SSH_USER} /usr/local/bin/node /usr/local/bin/node
+COPY --from=node:15.5.0 /usr/local/bin/node /usr/local/bin/node
 # TODO: Add yarbn/npm/npx/yarnpkg??
 
 # Create .dotfiles
 COPY --chown=${SSH_USER}:${SSH_USER} dotfiles /home/${SSH_USER}/.dotfiles
-
-# Set ZSH for SSH_USER
-RUN chsh -s $(which zsh) ${SSH_USER}
 
 # User Configuration
 USER "${SSH_USER}"
