@@ -24,9 +24,7 @@ template:
 	@go run ./main.go template workspace-action > .github/workflows/workspace.yaml
 
 pull:
-	@docker pull ghcr.io/mentos1386/workspace-ubuntu:edge
-	@docker pull ghcr.io/mentos1386/starship:0.47.0
-	@docker pull ghcr.io/mentos1386/kubectl:1.20.0
+	@docker pull ghcr.io/mentos1386/workspace:edge
 
 run:
 	@docker run -it --rm --workdir /home/tine --user tine ghcr.io/mentos1386/workspace:edge zsh

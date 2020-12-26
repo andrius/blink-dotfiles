@@ -44,16 +44,16 @@ COPY --from=ghcr.io/mentos1386/mosh:master /usr/bin/mosh /usr/bin/mosh
 COPY --from=ghcr.io/mentos1386/mosh:master /usr/bin/mosh-server /usr/bin/mosh-server
 COPY --from=ghcr.io/mentos1386/mosh:master /usr/bin/mosh-client /usr/bin/mosh-client
 # Golang
-COPY --from=golang:1.15.6 --chown=${SSH_USER} /usr/local/go /home/${SSH_USER}/.go
+COPY --from=golang:1.15.6-alpine --chown=${SSH_USER} /usr/local/go /home/${SSH_USER}/.go
 ENV PATH=/home/${SSH_USER}/.go/bin:$PATH
 # Rust
-COPY --from=rust:1.48.0 --chown=${SSH_USER} /usr/local/cargo /home/${SSH_USER}/.cargo
-COPY --from=rust:1.48.0 --chown=${SSH_USER} /usr/local/rustup /home/${SSH_USER}/.rustup
+COPY --from=rust:1.48.0-alpine --chown=${SSH_USER} /usr/local/cargo /home/${SSH_USER}/.cargo
+COPY --from=rust:1.48.0-alpine --chown=${SSH_USER} /usr/local/rustup /home/${SSH_USER}/.rustup
 ENV CARGO_HOME=/home/${SSH_USER}/.cargo
 ENV RUSTUP_HOME=/home/${SSH_USER}/.rustup
 ENV PATH=/home/${SSH_USER}/.cargo/bin:$PATH
 # Node
-COPY --from=node:15.5.0 /usr/local/bin/node /usr/local/bin/node
+COPY --from=node:15.5.0-alpine /usr/local/bin/node /usr/local/bin/node
 # TODO: Add yarbn/npm/npx/yarnpkg??
 
 # Create .dotfiles
