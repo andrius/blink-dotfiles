@@ -3,7 +3,7 @@ FROM sgerrand/alpine-abuild:3.12 as build
 LABEL maintainer="Tine <mentos1386> Jozelj <tine@tjo.space>"
 LABEL org.opencontainers.image.source https://github.com/mentos1386/workspace
 
-COPY --chown=builder mosh /home/builder/package
+COPY --chown=builder packages/mosh /home/builder/package
 RUN sudo chown builder -R /home/builder/package
 
 ARG VERSION=master

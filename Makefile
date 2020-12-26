@@ -6,16 +6,16 @@ build:
 	@docker buildx build --load -t ${REGISTRY}/workspace:edge -f Dockerfile .
 
 build-package-starship:
-	@docker buildx build --load -t ${REGISTRY}/starship:0.47.0 -f packages/Dockerfile.starship packages/
+	@docker buildx build --load -t ${REGISTRY}/starship:0.47.0 -f packages/Dockerfile.starship .
 
 build-package-kubectl:
-	@docker buildx build --load -t ${REGISTRY}/kubectl:1.20.0 -f packages/Dockerfile.kubectl packages/
+	@docker buildx build --load -t ${REGISTRY}/kubectl:1.20.0 -f packages/Dockerfile.kubectl .
 
 build-package-glow:
-	@docker buildx build --load -t ${REGISTRY}/glow:1.3.0 -f packages/Dockerfile.glow packages/
+	@docker buildx build --load -t ${REGISTRY}/glow:1.3.0 -f packages/Dockerfile.glow .
 
 build-package-mosh:
-	@docker buildx build --progress ${PROGRESS} --load -t ${REGISTRY}/mosh:master -f packages/Dockerfile.mosh packages/
+	@docker buildx build --progress ${PROGRESS} --load -t ${REGISTRY}/mosh:master -f packages/Dockerfile.mosh .
 
 build-packages: package-kubectl package-starship
 
