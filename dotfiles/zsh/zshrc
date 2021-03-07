@@ -1,8 +1,11 @@
 # Always start tmux if it isn't yet.
-if [ -z "$TMUX" ]
-then
-  tmux attach -t default || tmux new -s default
-fi
+#if [ -z "$TMUX" ]
+#then
+#  tmux attach -t default || tmux new -s default
+#fi
+
+# NVM
+source /usr/share/nvm/init-nvm.sh
 
 # Starship
 eval "$(starship init zsh)"
