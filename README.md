@@ -1,8 +1,7 @@
 ![Workspace](https://github.com/mentos1386/workspace/workflows/workspace/badge.svg)
 ![Packages](https://github.com/mentos1386/workspace/workflows/packages/badge.svg)
 
-my workspace as a docker container
-==================================
+# my workspace as a docker container
 
 - [Introduction](#introduction)
 - [Clipboard](#clipboard)
@@ -16,8 +15,6 @@ my workspace as a docker container
   - zsh, spaceship-prompt, git
 - [ ] Add the configurations i have
   - zsh, git, nextcloud
-- [ ] GUI using VNC?
-
 
 # Introduction
 
@@ -52,4 +49,3 @@ with ssh and recent `mosh`.
 # References
 
 [vim-oscyank plugin](https://github.com/ojroques/vim-oscyank)
-

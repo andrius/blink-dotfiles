@@ -1,11 +1,22 @@
 ##
-# Workspace
-[templates."workspace-action"]
+# Workspace Node
+[templates."workspace-node-action"]
 template = "templates/actions/workspace.yaml.tmpl"
 
-[templates."workspace-action".vars]
+[templates."workspace-node-action".vars]
 name = "workspace-node"
 dockerfile = "Dockerfile.node"
+repository = "ghcr.io/mentos1386"
+platforms = "linux/amd64,linux/arm64"
+
+##
+# Workspace Golang
+[templates."workspace-golang-action"]
+template = "templates/actions/workspace.yaml.tmpl"
+
+[templates."workspace-golang-action".vars]
+name = "workspace-golang"
+dockerfile = "Dockerfile.golang"
 repository = "ghcr.io/mentos1386"
 platforms = "linux/amd64,linux/arm64"
 
