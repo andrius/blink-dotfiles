@@ -1,5 +1,5 @@
 # vim: set fenc=utf-8 ts=2 sw=2 sts=2 et ft=Dockerfile :
-FROM alpine:3.12
+FROM alpine:3.18.3
 
 LABEL maintainer="Andrius Kairiukstis <k@andrius.mobi>"
 
